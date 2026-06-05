@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍔 Hamburgueria Dashboard</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍔</text></svg>">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes checkBounce {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.1); }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .animate-bounce-check { animation: checkBounce 0.5s ease-out forwards; }
+    </style>
+</head>
+
+<body class="bg-slate-900 text-slate-100 font-sans min-h-screen relative overflow-x-hidden">
+
+    <div class="container mx-auto p-6 max-w-6xl">
+        <header class="flex justify-between items-center border-b border-slate-800 pb-6 mb-8">
+            <div>
+                <h1 class="text-3xl font-extrabold text-amber-500 tracking-tight">🍔 VIEWS'S BURGER</h1>
+                <p class="text-slate-400 text-sm mt-1">Lógica e Banco de Dados em Tempo Real</p>
+            </div>
+            <div class="bg-slate-800 px-4 py-2 rounded-lg border border-slate-700">
+                <span class="text-xs text-slate-400 block uppercase font-semibold">Carrinho ID Atual</span>
+                <span id="carrinho-id-display" class="text-xl font-bold text-amber-400">Nenhum</span>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+
+            <main class="md:col-span-7 space-y-6">
+                <h2 class="text-xl font-bold text-slate-200 border-l-4 border-amber-500 pl-2">Simular Escolhas do Cliente</h2>
+
+                <div class="grid grid-cols-1 gap-4">
+                    <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 flex flex-col justify-between hover:border-slate-600 transition">
+                        <div>
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-lg font-bold text-white">Monstro Bacon</h3>
+                                <span class="bg-amber-500/10 text-amber-400 text-sm font-bold px-2.5 py-1 rounded">R$ 36,00</span>
+                            </div>
+                            <p class="text-slate-400 text-xs mt-1">Pão australiano, blend de 150g, muito bacon crocante e cheddar maçaricado.</p>
+
+                            <div class="mt-4 pt-3 border-t border-slate-700/50 space-y-2">
+                                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Customizar (Adicionais):</p>
+                                <div class="flex flex-wrap gap-4 text-sm mt-1">
+                                    <label class="flex items-center space-x-2 cursor-pointer bg-slate-900/50 px-3 py-1.5 rounded border border-slate-700/60">
+                                        <input type="checkbox" id="add-bacon" value="10" class="accent-amber-500">
+                                        <span>+ Bacon em Cubos (R$ 4,50)</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2 cursor-pointer bg-slate-900/50 px-3 py-1.5 rounded border border-slate-700/60">
+                                        <input type="checkbox" id="add-cheddar" value="11" class="accent-amber-500">
+                                        <span>+ Cheddar Extra (R$ 3,50)</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <button onclick="adicionarLanche()" class="mt-4 w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-2 px-4 rounded-lg transition duration-200">
+                            Adicionar ao Carrinho
+                        </button>
+                    </div>
+
+                    <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 flex justify-between items-center hover:border-slate-600 transition">
+                        <div class="max-w-[70%]">
+                            <h3 class="text-lg font-bold text-white">Batata Frita Palito</h3>
+                            <p class="text-slate-400 text-xs mt-1">Batata frita crocante com sal e alecrim.</p>
+                            <span class="text-amber-400 text-sm font-bold block mt-2">R$ 14,00</span>
+                        </div>
+                        <button onclick="adicionarItemSimples(11)" class="bg-slate-700 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded-lg transition duration-200">
+                            + Adicionar Batata
+                        </button>
+                    </div>
+
+                    <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 flex justify-between items-center hover:border-slate-600 transition">
+                        <div class="max-w-[70%]">
+                            <h3 class="text-lg font-bold text-white">Refrigerante Lata</h3>
+                            <p class="text-slate-400 text-xs mt-1">Coca-cola ou Guaraná 350ml. <span class="text-emerald-400 font-semibold">(Leve o 2º com 50% OFF)</span></p>
+                            <span class="text-amber-400 text-sm font-bold block mt-2">R$ 6,00</span>
+                        </div>
+                        <button onclick="adicionarItemSimples(12)" class="bg-slate-700 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded-lg transition duration-200">
+                            + Adicionar Refri
+                        </button>
+                    </div>
+                </div>
+            </main>
+
+            <aside class="md:col-span-5 space-y-6">
+                <h2 class="text-xl font-bold text-slate-200 border-l-4 border-amber-500 pl-2">Geral</h2>
+
+                <div class="bg-slate-800 rounded-xl border border-slate-700 p-6 shadow-xl space-y-4">
+                    <div class="border-b border-slate-700 pb-3">
+                        <h3 class="text-sm font-bold text-slate-400 uppercase tracking-wider">Itens no Banco</h3>
+                    </div>
+
+                    <div id="carrinho-itens" class="space-y-3 max-h-60 overflow-y-auto text-sm">
+                        <p class="text-slate-500 italic py-4 text-center">Seu carrinho está vazio.</p>
+                    </div>
+
+                    <div id="bloco-descontos" class="hidden bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 p-3 rounded-lg text-xs space-y-1">
+                        <p class="font-bold uppercase tracking-wider text-[10px] text-emerald-500 mb-1">🔥 Promoções:</p>
+                        <ul id="lista-descontos" class="list-disc pl-4 space-y-1"></ul>
+                    </div>
+
+                    <div class="border-t border-slate-700 pt-4 space-y-2 text-sm">
+                        <div class="flex justify-between text-slate-400">
+                            <span>Subtotal Bruto:</span>
+                            <span id="total-bruto">R$ 0,00</span>
+                        </div>
+                        <div class="flex justify-between text-emerald-400">
+                            <span>Total Descontos:</span>
+                            <span id="total-desconto">- R$ 0,00</span>
+                        </div>
+                        <div class="flex justify-between text-xl font-extrabold text-white pt-2 border-t border-slate-700/50">
+                            <span class="text-amber-500">Valor Final:</span>
+                            <span id="total-final">R$ 0,00</span>
+                        </div>
+                    </div>
+
+                    <button id="btn-finalizar" onclick="finalizarPedido()" disabled class="w-full bg-emerald-600 hover:bg-emerald-500 disabled:bg-slate-700 disabled:text-slate-500 text-slate-950 text-lg font-black py-3 px-4 rounded-xl transition duration-200 uppercase tracking-wide shadow-lg shadow-emerald-900/20">
+                        Finalizar Pedido
+                    </button>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <div id="modal-status" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+        <div class="bg-slate-800 border border-slate-700 p-8 rounded-2xl max-w-sm w-full text-center shadow-2xl flex flex-col items-center">
+            
+            <div id="status-loading" class="space-y-4">
+                <div class="animate-spin rounded-full h-12 w-12 border-4 border-amber-500 border-t-transparent mx-auto"></div>
+                <p class="text-amber-400 font-bold tracking-wide text-sm uppercase">Processando Transação SQL...</p>
+                <p class="text-xs text-slate-400">Garantindo persistência atômica no Neon</p>
+            </div>
+
+            <div id="status-success" class="hidden space-y-4 w-full">
+                <div class="h-16 w-16 bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 rounded-full flex items-center justify-center text-3xl mx-auto animate-bounce-check">
+                    ⚡
+                </div>
+                <div>
+                    <h4 class="text-xl font-black text-white">Pedido a Caminho!</h4>
+                    <p id="modal-carrinho-id" class="text-xs text-amber-500 font-mono font-semibold mt-0.5">CARRINHO #0</p>
+                </div>
+                <p class="text-xs text-slate-300 bg-slate-900/60 p-3 rounded-lg border border-slate-700/50">
+                    Enviado direto para a produção via <span class="text-emerald-400 font-bold">Database Transaction</span>.
+                </p>
+                <div class="pt-2">
+                    <span class="text-[10px] text-slate-400 block uppercase font-bold tracking-wider">Tempo estimado de preparo</span>
+                    <span class="text-2xl font-black text-white tracking-tight">12 <span class="text-sm font-medium text-slate-400">minutos</span></span>
+                </div>
+                <button onclick="fecharModal()" class="w-full mt-4 bg-slate-700 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded-xl text-sm transition">
+                    Fechar Painel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3333';
+        let carrinhoId = null;
+
+        async function atualizarResumoCarrinho() {
+            if (!carrinhoId) return;
+
+            try {
+                const response = await fetch(`${API_URL}/carrinho/${carrinhoId}`);
+                const data = await response.json();
+
+                if (response.status === 404) return;
+
+                const containerItens = document.getElementById('carrinho-itens');
+                containerItens.innerHTML = '';
+
+                data.itens.forEach(item => {
+                    let adicionaisTexto = '';
+                    if (item.adicionais && item.adicionais.length > 0) {
+                        adicionaisTexto = `<span class="block text-[11px] text-amber-400/80 mt-0.5">+ ${item.adicionais.map(a => a.nome).join(', ')}</span>`;
+                    }
+
+                    containerItens.innerHTML += `
+                        <div class="flex justify-between items-start bg-slate-900/40 p-2.5 rounded border border-slate-700/40">
+                          <div>
+                            <span class="font-bold text-slate-200">${item.produto}</span>
+                            <span class="text-xs text-slate-400 mx-1">x${item.quantidade}</span>
+                            ${adicionaisTexto}
+                          </div>
+                          <span class="font-semibold text-slate-300">R$ ${item.subtotal.toFixed(2)}</span>
+                        </div>
+                    `;
+                });
+
+                const blocoDescontos = document.getElementById('bloco-descontos');
+                const listaDescontos = document.getElementById('lista-descontos');
+
+                if (data.resumo_financeiro.descontos_aplicados.length > 0) {
+                    blocoDescontos.classList.remove('hidden');
+                    listaDescontos.innerHTML = data.resumo_financeiro.descontos_aplicados
+                        .map(desc => `<li>${desc}</li>`).join('');
+                } else {
+                    blocoDescontos.classList.add('hidden');
+                }
+
+                document.getElementById('total-bruto').innerText = `R$ ${data.resumo_financeiro.valor_bruto.toFixed(2)}`;
+                document.getElementById('total-desconto').innerText = `- R$ ${data.resumo_financeiro.total_descontos.toFixed(2)}`; 
+                document.getElementById('total-final').innerText = `R$ ${data.resumo_financeiro.valor_final.toFixed(2)}`;
+
+                const btnFinalizar = document.getElementById('btn-finalizar');
+                btnFinalizar.disabled = false;
+
+            } catch (error) {
+                console.error('Erro ao buscar dados da API:', error);
+            }
+        }
+
+        async function adicionarItemSimples(produtoId) {
+            const payload = { produto_id: produtoId, granite: 1 };
+            if (carrinhoId) payload.carrinho_id = carrinhoId;
+            await dispararAdicionar(payload);
+        }
+
+        async function adicionarLanche() {
+            const payload = { produto_id: 10, quantidade: 1, adicionais_ids: [] };
+            if (carrinhoId) payload.carrinho_id = carrinhoId;
+
+            if (document.getElementById('add-bacon').checked) payload.adicionais_ids.push(10);
+            if (document.getElementById('add-cheddar').checked) payload.adicionais_ids.push(11);
+
+            await dispararAdicionar(payload);
+
+            document.getElementById('add-bacon').checked = false;
+            document.getElementById('add-cheddar').checked = false;
+        }
+
+        async function dispararAdicionar(payload) {
+            try {
+                const response = await fetch(`${API_URL}/carrinho/adicionar`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await response.json();
+
+                if (response.ok) {
+                    if (!carrinhoId) {
+                        carrinhoId = data.carrinho_id;
+                        document.getElementById('carrinho-id-display').innerText = `#${carrinhoId}`;
+                    }
+                    await atualizarResumoCarrinho();
+                }
+            } catch (error) {
+                alert('Erro ao conectar com a API. Certifique-se de que o servidor está rodando!');
+            }
+        }
+
+        async function finalizarPedido() {
+            if (!carrinhoId) return;
+
+            const modal = document.getElementById('modal-status');
+            const loadingState = document.getElementById('status-loading');
+            const successState = document.getElementById('status-success');
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            loadingState.classList.remove('hidden');
+            successState.classList.add('hidden');
+
+            try {
+                const response = await fetch(`${API_URL}/carrinho/${carrinhoId}/finalizar`, { method: 'POST' });
+                const data = await response.json();
+
+                setTimeout(() => {
+                    if (response.ok) {
+                        document.getElementById('modal-carrinho-id').innerText = `CARRINHO PROCESSADO: #${data.carrinho_id}`;
+                        loadingState.classList.add('hidden');
+                        successState.classList.remove('hidden');
+                    } else {
+                        modal.classList.add('hidden');
+                        modal.classList.remove('flex');
+                        alert(`Erro: ${data.erro}`);
+                    }
+                }, 1200);
+
+            } catch (error) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                console.error(error);
+            }
+        }
+
+        function fecharModal() {
+            document.getElementById('modal-status').classList.add('hidden');
+            document.getElementById('modal-status').classList.remove('flex');
+            
+            carrinhoId = null;
+            document.getElementById('carrinho-id-display').innerText = 'Nenhum';
+            document.getElementById('carrinho-itens').innerHTML = '<p class="text-slate-500 italic py-4 text-center">Seu carrinho está vazio.</p>';
+            document.getElementById('bloco-descontos').classList.add('hidden');
+            document.getElementById('total-bruto').innerText = 'R$ 0,00';
+            document.getElementById('total-desconto').innerText = '- R$ 0,00';
+            document.getElementById('total-final').innerText = 'R$ 0,00';
+            document.getElementById('btn-finalizar').disabled = true;
+        }
+    </script>
+</body>
+
+</html>
