@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <img src="./img/apresentacao-projeto.mp4" alt="Demonstração Views's Burger" width="700px" style="border-radius: 10px; border: 2px solid #f59e0b;"/>
+  <img src="./img/apresentacao-projeto.gif" alt="Demonstração Views's Burger" width="700px" style="border-radius: 10px; border: 2px solid #f59e0b;"/>
 </p>
 
 ## 🎯 Objetivo
